@@ -1,18 +1,25 @@
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { useContext } from "react";
 import { Link } from "react-router-dom";
-import app from "../../firebase/firebase.config";
+import { AuthContext } from "../../Providers/AuthProviders";
 
 const Login = () => {
-    const auth = getAuth(app);
+    const { logInUser } = useContext(AuthContext)
 
     const handleLogInSubmit = e => {
         e.preventDefault();
         const form = e.target;
         const email = form.email.value;
         const password = form.password.value;
-        console.log(email, name)
-        signInWithEmailAndPassword(auth, email, password)
-        .
+        console.log(email, password)
+        logInUser(email, password)
+            .then(result => {
+                const loggedUser = result.user;
+                console.log(result.user)
+                form.reset('')
+            })
+            .catch(error => {
+                console.log(error.message)
+            })
 
     }
     return (

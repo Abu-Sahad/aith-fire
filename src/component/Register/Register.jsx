@@ -1,10 +1,11 @@
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-import app from "../../firebase/firebase.config";
 import { Link } from "react-router-dom";
+import { useContext } from "react";
+import { AuthContext } from "../../Providers/AuthProviders";
 
 
 const Register = () => {
-    const auth = getAuth(app);
+    //step-4 authProviders page previous step 1-3 complete
+    const { user, createUser } = useContext(AuthContext)
 
     const handleRegisterSubmit = (e) => {
         e.preventDefault();
@@ -12,10 +13,15 @@ const Register = () => {
         const name = form.name.value
         const email = form.email.value;
         const password = form.password.value;
-        console.log(name,email, password)
-        createUserWithEmailAndPassword(auth, email, password)
+        console.log(name, email, password)
+        //console.log(createUser)
+
+        // createUserWithEmailAndPassword(auth, email, password)
+        createUser(email, password)
             .then(result => {
-                console.log(result.user)
+                const loggedUser = result.user
+                //console.log(result.user)
+                form.reset();
             })
             .catch(error => {
                 console.log(error.message)
